@@ -11,6 +11,7 @@ import { LocalItemCatalog } from './model/item-catalog/local-item-catalog';
 import { HttpItemCatalog } from './model/item-catalog/http-item-catalog';
 import { InvoiceSummaryComponent } from './invoice-summary/invoice-summary.component';
 import { ClientInfoComponent } from './client-info/client-info.component';
+import { ClientInfoService } from './model/client-info-service';
 
 @NgModule({
   declarations: [InvoicePositionsComponent, InvoiceComponent, SinglePositionComponent, InvoiceSummaryComponent, ClientInfoComponent],
@@ -29,6 +30,9 @@ import { ClientInfoComponent } from './client-info/client-info.component';
     // }
     {
       provide: ItemCatalog, useFactory: (http: HttpClient) => new HttpItemCatalog(http), deps: [HttpClient]
+    },
+    {
+      provide: ClientInfoService, useFactory: () => new ClientInfoService()
     }
   ]
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientInfo } from '../model/client-info';
+import { ClientInfo, ClientInfoService } from '../model/client-info-service';
 
 @Component({
   selector: 'app-client-info',
@@ -7,10 +7,12 @@ import { ClientInfo } from '../model/client-info';
   styleUrls: ['./client-info.component.scss']
 })
 export class ClientInfoComponent implements OnInit {
-
   public model: ClientInfo;
+  submitted: boolean;
 
-  constructor() {
+  suggestions: string[] = [];
+
+  constructor(private clientInfoService: ClientInfoService) {
     this.model = {
       name:"",
       taxNumber:""
@@ -22,5 +24,20 @@ export class ClientInfoComponent implements OnInit {
 
   onSubmit() {
     console.log(this.model)
+    this.submitted = true;
+    this.clientInfoService.saveClientInfo(this.model);
+  }
+
+  edit(){
+    this.submitted = false;
+  }
+
+  handleAutocompleteName($event: any): void {
+    this.suggestions = this.clientInfoService.getClientInfos().map(data => data.name).filter(data => data.startsWith($event.target.value));
+  }
+
+  selectSuggestion(suggestion: string): void {
+    this.model = this.clientInfoService.getClientInfos().find(data => data.name === suggestion);
+    this.suggestions = [];
   }
 }

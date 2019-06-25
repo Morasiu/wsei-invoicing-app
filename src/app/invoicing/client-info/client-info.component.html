@@ -1,22 +1,38 @@
 <div class="col">
-    <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" class="form-control" 
-          id="name"
-          name="name"
-          required 
-          [(ngModel)]="model.name">
-        </div>
-        <div class="form-group">
-          <label for="taxNumber">Tax Number</label>
-          <input type="text" class="form-control"
-          id="taxNumber"
-          name="taxNumber"
-          required
-          [(ngModel)]="model.taxNumber">
-        </div>
-        <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
-      </form>
+  <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+    <h2 class="">Client</h2>
+      <div class="form-inline">
+        <input type="text" class="form-control"
+        *ngIf="!this.submitted"
+        placeholder="Company name"
+        id="name"
+        name="name"
+        required 
+        [(ngModel)]="model.name"
+        (keyup)=handleAutocompleteName($event) 
+        autocomplete="off">
+
+        <ul class="single-position__suggestion-list" *ngIf="suggestions.length > 0 && !submitted">
+            <li class="single-position__suggestion-item" *ngFor="let suggestion of suggestions" (click)=selectSuggestion(suggestion)>{{ suggestion }}</li>
+          </ul>
+        <p class="" *ngIf="this.submitted">
+          {{this.model.name}}
+        </p>
+      </div>
+      <div class="form-inline">
+        <input type="text" class="form-control"
+        placeholder="Tax number"
+        id="taxNumber"
+        name="taxNumber"
+        *ngIf="!this.submitted"
+        required
+        [(ngModel)]="model.taxNumber">
+        <p class="" *ngIf="this.submitted">
+            {{this.model.taxNumber}}
+        </p>
+      </div>
+      <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid" *ngIf="!this.submitted">Submit</button>
+      <button type="submit" class="btn btn-warning" [disabled]="!heroForm.form.valid" *ngIf="this.submitted" (click)="edit()">Edit</button>
+    </form>
 </div>
 
