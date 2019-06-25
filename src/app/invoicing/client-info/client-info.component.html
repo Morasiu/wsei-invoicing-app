@@ -12,12 +12,14 @@
         (keyup)=handleAutocompleteName($event) 
         autocomplete="off">
 
-        <ul class="single-position__suggestion-list" *ngIf="suggestions.length > 0 && !submitted">
-            <li class="single-position__suggestion-item" *ngFor="let suggestion of suggestions" (click)=selectSuggestion(suggestion)>{{ suggestion }}</li>
-          </ul>
         <p class="" *ngIf="this.submitted">
           {{this.model.name}}
         </p>
+      </div>
+      <div class="autocomplete col-2">
+        <ul *ngIf="suggestions.length > 0 && !submitted">
+          <li *ngFor="let suggestion of suggestions" (click)=selectSuggestion(suggestion)>{{ suggestion }}</li>
+        </ul>
       </div>
       <div class="form-inline">
         <input type="text" class="form-control"

@@ -23,7 +23,6 @@ export class ClientInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.model)
     this.submitted = true;
     this.clientInfoService.saveClientInfo(this.model);
   }
@@ -33,11 +32,12 @@ export class ClientInfoComponent implements OnInit {
   }
 
   handleAutocompleteName($event: any): void {
-    this.suggestions = this.clientInfoService.getClientInfos().map(data => data.name).filter(data => data.startsWith($event.target.value));
+    this.suggestions = this.clientInfoService.getClientInfos().map(data => data.name).filter(data => data.startsWith($event.target.value)).slice(0, 3);
   }
 
   selectSuggestion(suggestion: string): void {
     this.model = this.clientInfoService.getClientInfos().find(data => data.name === suggestion);
     this.suggestions = [];
+    this.submitted = true;
   }
 }
